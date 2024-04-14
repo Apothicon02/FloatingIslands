@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+
+  "quilt_loader": {
+    "group": "${mod_group}",
+    "id": "${mod_id}",
+    "version": "${mod_version}",
+
+    "intermediate_mappings":"net.fabricmc:intermediary",
+
+    "metadata": {
+      "name": "${mod_name}",
+      "description": "Adds a floating islands world generator.",
+      "contributors": {
+        "Author": "Apothicon"
+      },
+
+      "contact": {
+        "homepage": "",
+        "issues": "https://discord.gg/HHqKa8vTAN",
+        "sources": ""
+      },
+
+      "icon": "assets/floating_islands/icon.png"
+    },
+
+    "entrypoints": {
+      "init": "com.apothicon.floating_islands.FloatingIslands"
+    },
+
+    "depends": [
+      {
+        "id": "cosmicquilt",
+        "versions": "*"
+      },
+      {
+        "id": "cosmicreach",
+        "versions": "*"
+      }
+    ]
+  },
+
+  "mixin": "floating_islands.mixins.json"
+}

@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.apothicon.floating_islands.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [],
+  "client": [
+    "ZoneGeneratorMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
