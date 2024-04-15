@@ -1,17 +1,22 @@
 {
-  "parent": "cube",
+  "cuboids": [
+      {
+          "localBounds": [0,0,0, 16,16,16],
+          "faces":
+          {
+              "localNegX": {"uv": [ 0, 0, 16, 16 ], "ambientocclusion": true, "cullFace": false, "texture": "all"},
+              "localPosX": {"uv": [ 0, 0, 16, 16 ], "ambientocclusion": true, "cullFace": false, "texture": "all"},
 
-  "textures":
-  {
-    "top":
-    {
-      "fileName": "cherry_leaves.png"
-    },
-    "side":
-    {
-      "fileName": "cherry_leaves.png"
-    },
-    "bottom":
+              "localNegY": {"uv": [ 0, 0, 16, 16 ], "ambientocclusion": true, "cullFace": false, "texture": "all"},
+              "localPosY": {"uv": [ 0, 0, 16, 16 ], "ambientocclusion": true, "cullFace": false, "texture": "all"},
+
+              "localNegZ": {"uv": [ 16, 0, 0, 16 ], "ambientocclusion": true, "cullFace": false, "texture": "all"},
+              "localPosZ": {"uv": [ 0, 0, 16, 16 ], "ambientocclusion": true, "cullFace": false, "texture": "all"}
+          }
+      }
+  ],
+  "textures": {
+    "all":
     {
       "fileName": "cherry_leaves.png"
     }

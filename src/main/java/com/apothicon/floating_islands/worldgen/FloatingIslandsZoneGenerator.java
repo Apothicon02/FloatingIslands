@@ -20,7 +20,8 @@ public class FloatingIslandsZoneGenerator extends ZoneGenerator {
     BlockState airBlock = this.getBlockStateInstance("base:air[default]");
     BlockState waterBlock = this.getBlockStateInstance("base:water[default]");
     BlockState stoneBasaltBlock = this.getBlockStateInstance("base:stone_basalt[default]");
-    BlockState grassBlock = this.getBlockStateInstance("base:grass[type=full]");
+    BlockState grassBlock = this.getBlockStateInstance("base:grass[default]");
+    BlockState grassSlabBlock = this.getBlockStateInstance("base:grass[type=full,slab_type=bottom]");
     BlockState sandBlock = this.getBlockStateInstance("base:sand[default]");
     BlockState sandSlabBlock = this.getBlockStateInstance("base:sand[default,slab_type=bottom]");
     BlockState dirtBlock = this.getBlockStateInstance("base:dirt[default]");
@@ -40,6 +41,7 @@ public class FloatingIslandsZoneGenerator extends ZoneGenerator {
     BlockState magmaSlabBlock = this.getBlockStateInstance("base:magma[default,slab_type=bottom]");
     BlockState cherryLeavesBlock = this.getBlockStateInstance("floating_islands:cherry_leaves[default]");
     BlockState cherryLeavesSlabBlock = this.getBlockStateInstance("floating_islands:cherry_leaves[default,slab_type=bottom]");
+    BlockState darkOakLeavesBlock = this.getBlockStateInstance("floating_islands:dark_oak_leaves[default]");
     Random random = new Random(seed);
     private SimplexNoise simplexNoise;
     IBlockDataFactory<BlockState> chunkDataFactory = new IBlockDataFactory<BlockState>() {
@@ -97,7 +99,11 @@ public class FloatingIslandsZoneGenerator extends ZoneGenerator {
                         if (isTerrain(globalX, globalY, globalZ)) {
                             BlockState surface = this.grassBlock;
                             if (crackNoise > -0.15 && crackNoise < 0.15) {
-                                surface = this.dirtSlabBlock;
+                                if (featureNoise < 0.3) {
+                                    surface = this.grassSlabBlock;
+                                } else {
+                                    surface = this.dirtSlabBlock;
+                                }
                             }
                             if (temperature(globalX, globalZ) > 0.66) {
                                 if (featureNoise < -0.9) {
@@ -150,10 +156,28 @@ public class FloatingIslandsZoneGenerator extends ZoneGenerator {
                                                     zone.setBlockState(cactusType, globalX, globalY+5, globalZ);
                                                 }
                                             }
-                                        } else if (surface == this.grassBlock && random.nextInt(0, 420) <= Math.abs(featureNoise*2)+1) {
-                                            int height = random.nextInt(6, 16);
-                                            makeTrunk(height, zone, globalX, globalY, globalZ);
-                                            makeCanopy(zone, globalX, globalY+height, globalZ);
+                                        } else if (surface == this.grassBlock) {
+                                            if (featureNoise < 0.3) {
+                                                if (random.nextInt(0, 420) <= Math.abs(featureNoise*2)+1) {
+                                                    int height = random.nextInt(6, 24);
+                                                    makeTrunk(height, zone, globalX, globalY, globalZ);
+                                                    makeCanopy(cherryLeavesBlock, random.nextInt(5, 7), zone, globalX, globalY + height, globalZ);
+                                                } else if (random.nextInt(0, 384) <= Math.abs(featureNoise*2)+1) {
+                                                    int height = 1;
+                                                    makeTrunk(height, zone, globalX, globalY, globalZ);
+                                                    makeSphere(darkOakLeavesBlock, 2, zone, globalX, globalY+1, globalZ);
+                                                } else {
+                                                    zone.setBlockState(cherryLeavesSlabBlock, globalX, globalY+1, globalZ);
+                                                }
+                                            } else if (random.nextInt(0, 172) <= Math.abs(featureNoise*2)+1) {
+                                                int height = random.nextInt(6, 16);
+                                                makeTrunk(height, zone, globalX, globalY, globalZ);
+                                                makeCanopy(darkOakLeavesBlock, random.nextInt(3, 6), zone, globalX, globalY + height, globalZ);
+                                            } else if (random.nextInt(0, 48) <= Math.abs(featureNoise*2)+1) {
+                                                int height = 1;
+                                                makeTrunk(height, zone, globalX, globalY, globalZ);
+                                                makeSphere(darkOakLeavesBlock, 2, zone, globalX, globalY+1, globalZ);
+                                            }
                                         }
                                     }
                                 } else {
@@ -177,20 +201,19 @@ public class FloatingIslandsZoneGenerator extends ZoneGenerator {
         }
     }
 
-    private void makeCanopy(Zone zone, int globalX, int globalY, int globalZ) {
-        int radius = random.nextInt(4, 6);
-        makeSphere(radius-2, zone, globalX, globalY-2, globalZ);
-        makeSphere(radius, zone, globalX, globalY, globalZ);
-        makeSphere(radius-1, zone, (int) (globalX+random.nextFloat(-0.25F*radius, 0.25F*radius)), globalY+1, (int) (globalZ+random.nextFloat(-0.25F*radius, 0.25F*radius)));
+    private void makeCanopy(BlockState leaves, int radius, Zone zone, int globalX, int globalY, int globalZ) {
+        makeSphere(leaves, radius-2, zone, globalX, globalY-2, globalZ);
+        makeSphere(leaves, radius, zone, globalX, globalY, globalZ);
+        makeSphere(leaves, radius-1, zone, (int) (globalX+random.nextFloat(-0.25F*radius, 0.25F*radius)), globalY+1, (int) (globalZ+random.nextFloat(-0.25F*radius, 0.25F*radius)));
     }
 
-    private void makeSphere(int radius, Zone zone, int globalX, int globalY, int globalZ) {
+    private void makeSphere(BlockState leaves, int radius, Zone zone, int globalX, int globalY, int globalZ) {
         for (int x = globalX-radius; x <= globalX+radius-1; x++) {
             for (int y = (int) (globalY-(radius*0.33)); y <= globalY+(radius*0.75); y++) {
                 for (int z = globalZ-radius+1; z <= globalZ+radius; z++) {
                     double distance = Math.abs(globalX-x)+Math.abs(globalY-y)+Math.abs(globalZ-z);
                     if (distance < radius*1.5) {
-                        zone.setBlockState(cherryLeavesBlock, x, y, z);
+                        zone.setBlockState(leaves, x, y, z);
                     }
                 }
             }
@@ -216,16 +239,18 @@ public class FloatingIslandsZoneGenerator extends ZoneGenerator {
                 }
             }
         }
-        int branchAltitude = globalY+random.nextInt(2, height);
-        float branchChance = random.nextFloat();
-        if (branchChance < 0.2) {
-            zone.setBlockState(branchBlockZ, globalX, branchAltitude, globalZ-1);
-        } else if (branchChance < 0.4) {
-            zone.setBlockState(branchBlockNegZ, globalX, branchAltitude, globalZ+1);
-        } else if (branchChance < 0.6) {
-            zone.setBlockState(branchBlockX, globalX-1, branchAltitude, globalZ);
-        } else if (branchChance < 0.8) {
-            zone.setBlockState(branchBlockNegX, globalX+1,branchAltitude, globalZ);
+        if (height > 2) {
+            int branchAltitude = globalY + random.nextInt(2, height);
+            float branchChance = random.nextFloat();
+            if (branchChance < 0.2) {
+                zone.setBlockState(branchBlockZ, globalX, branchAltitude, globalZ - 1);
+            } else if (branchChance < 0.4) {
+                zone.setBlockState(branchBlockNegZ, globalX, branchAltitude, globalZ + 1);
+            } else if (branchChance < 0.6) {
+                zone.setBlockState(branchBlockX, globalX - 1, branchAltitude, globalZ);
+            } else if (branchChance < 0.8) {
+                zone.setBlockState(branchBlockNegX, globalX + 1, branchAltitude, globalZ);
+            }
         }
     }
 
