@@ -31,12 +31,15 @@ public class FloatingIslandsZoneGenerator extends ZoneGenerator {
     BlockState cactusBlockX = this.getBlockStateInstance("base:grass[type=full,slab_type=verticalPosX]");
     BlockState cactusBlockNegX = this.getBlockStateInstance("base:grass[type=full,slab_type=verticalNegZ]");
     BlockState logBlock = this.getBlockStateInstance("base:tree_log[default]");
+    BlockState woodBlock = this.getBlockStateInstance("base:tree_log[type=bark]");
     BlockState branchBlockZ = this.getBlockStateInstance("base:tree_log[default,slab_type=verticalPosZ]");
     BlockState branchBlockNegZ = this.getBlockStateInstance("base:tree_log[default,slab_type=verticalNegZ]");
     BlockState branchBlockX = this.getBlockStateInstance("base:tree_log[default,slab_type=verticalPosX]");
     BlockState branchBlockNegX = this.getBlockStateInstance("base:tree_log[default,slab_type=verticalNegX]");
     BlockState magmaBlock = this.getBlockStateInstance("base:magma[default]");
     BlockState magmaSlabBlock = this.getBlockStateInstance("base:magma[default,slab_type=bottom]");
+    BlockState cherryLeavesBlock = this.getBlockStateInstance("floating_islands:cherry_leaves[default]");
+    BlockState cherryLeavesSlabBlock = this.getBlockStateInstance("floating_islands:cherry_leaves[default,slab_type=bottom]");
     Random random = new Random(seed);
     private SimplexNoise simplexNoise;
     IBlockDataFactory<BlockState> chunkDataFactory = new IBlockDataFactory<BlockState>() {
@@ -187,7 +190,7 @@ public class FloatingIslandsZoneGenerator extends ZoneGenerator {
                 for (int z = globalZ-radius+1; z <= globalZ+radius; z++) {
                     double distance = Math.abs(globalX-x)+Math.abs(globalY-y)+Math.abs(globalZ-z);
                     if (distance < radius*1.5) {
-                        zone.setBlockState(grassBlock, x, y, z);
+                        zone.setBlockState(cherryLeavesBlock, x, y, z);
                     }
                 }
             }
@@ -207,9 +210,9 @@ public class FloatingIslandsZoneGenerator extends ZoneGenerator {
             zone.setBlockState(logBlock, globalX, globalY+i, globalZ);
             if (height >= 9) {
                 if (i <= height/3) {
-                    zone.setBlockState(logBlock, globalX-xTilt, globalY+i-1, globalZ-zTilt);
+                    zone.setBlockState(woodBlock, globalX-xTilt, globalY+i-1, globalZ-zTilt);
                 } else if (i >= height/2+1) {
-                    zone.setBlockState(logBlock, globalX+xTilt, globalY+i, globalZ+zTilt);
+                    zone.setBlockState(woodBlock, globalX+xTilt, globalY+i, globalZ+zTilt);
                 }
             }
         }

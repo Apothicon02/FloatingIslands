@@ -1,0 +1,20 @@
+{
+  "parent": "cube",
+
+  "textures":
+  {
+    "top":
+    {
+      "fileName": "cherry_leaves.png"
+    },
+    "side":
+    {
+      "fileName": "cherry_leaves.png"
+    },
+    "bottom":
+    {
+      "fileName": "cherry_leaves.png"
+    }
+  }
+
+}
