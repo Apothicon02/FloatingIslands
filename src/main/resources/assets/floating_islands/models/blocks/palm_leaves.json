@@ -6,7 +6,7 @@
           {
               "localNegX": {"uv": [ 0, 0, 16, 16 ], "ambientocclusion": true, "cullFace": false, "texture": "all"},
               "localPosX": {"uv": [ 0, 0, 16, 16 ], "ambientocclusion": true, "cullFace": false, "texture": "all"},
-
+              
               "localNegY": {"uv": [ 0, 0, 16, 16 ], "ambientocclusion": true, "cullFace": false, "texture": "all"},
               "localPosY": {"uv": [ 0, 0, 16, 16 ], "ambientocclusion": true, "cullFace": false, "texture": "all"},
 
@@ -18,7 +18,7 @@
   "textures": {
     "all":
     {
-      "fileName": "cherry_leaves.png"
+      "fileName": "floating_islands:palm_leaves.png"
     }
   }
 

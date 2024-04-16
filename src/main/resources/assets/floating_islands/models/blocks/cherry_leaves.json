@@ -1,0 +1,25 @@
+{
+  "cuboids": [
+      {
+          "localBounds": [0,0,0, 16,16,16],
+          "faces":
+          {
+              "localNegX": {"uv": [ 0, 0, 16, 16 ], "ambientocclusion": true, "cullFace": false, "texture": "all"},
+              "localPosX": {"uv": [ 0, 0, 16, 16 ], "ambientocclusion": true, "cullFace": false, "texture": "all"},
+
+              "localNegY": {"uv": [ 0, 0, 16, 16 ], "ambientocclusion": true, "cullFace": false, "texture": "all"},
+              "localPosY": {"uv": [ 0, 0, 16, 16 ], "ambientocclusion": true, "cullFace": false, "texture": "all"},
+
+              "localNegZ": {"uv": [ 16, 0, 0, 16 ], "ambientocclusion": true, "cullFace": false, "texture": "all"},
+              "localPosZ": {"uv": [ 0, 0, 16, 16 ], "ambientocclusion": true, "cullFace": false, "texture": "all"}
+          }
+      }
+  ],
+  "textures": {
+    "all":
+    {
+      "fileName": "floating_islands:cherry_leaves.png"
+    }
+  }
+
+}

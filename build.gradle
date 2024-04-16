@@ -36,6 +36,10 @@ repositories {
         name "Sponge"
         url "https://repo.spongepowered.org/maven/"
     }
+    maven {
+        name "CRM"
+        url 'https://maven.crmodders.dev/releases/'
+    }
 
     mavenCentral()
 }
@@ -63,6 +67,8 @@ dependencies {
 
     // Cosmic Quilt
     internal "org.codeberg.CRModders:cosmic-quilt:${cosmic_quilt_version}"
+
+    internal "dev.crmodders:fluxapi:0.5.8r3"
 
     // FluxAPI
     //  If you don't want FluxAPI included in your project, remove this and the reference in the `gradle.properties`

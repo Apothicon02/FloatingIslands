@@ -1,0 +1,12 @@
+{
+  "parent": "cube",
+
+  "textures":
+  {
+    "all":
+    {
+      "fileName": "floating_islands:stripped_tree_log_side.png"
+    }
+  }
+
+}

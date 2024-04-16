@@ -1,10 +1,10 @@
 {
-  "stringId": "floating_islands:cherry_leaves",
+  "stringId": "floating_islands:palm_leaves",
   "blockStates":
   {
       "default": 
       {
-          "modelName": "cherry_leaves",
+          "modelName": "floating_islands:palm_leaves",
           "isOpaque": true,
           "isTransparent": true,
           "lightAttenuation": 0,

@@ -1,0 +1,15 @@
+{
+  "stringId": "floating_islands:cherry_leaves",
+  "blockStates":
+  {
+      "default": 
+      {
+          "modelName": "floating_islands:cherry_leaves",
+          "isOpaque": true,
+          "isTransparent": true,
+          "lightAttenuation": 0,
+          "generateSlabs": true,
+          "walkThrough": true
+      }
+  }
+}

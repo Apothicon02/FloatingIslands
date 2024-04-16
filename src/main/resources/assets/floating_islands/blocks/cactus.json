@@ -1,0 +1,13 @@
+{
+  "stringId": "floating_islands:cactus",
+  "blockStates":
+  {
+      "default": 
+      {
+          "modelName": "floating_islands:cactus",
+          "isOpaque": true,
+          "isTransparent": false,
+          "generateSlabs": true
+      }
+  }
+}
