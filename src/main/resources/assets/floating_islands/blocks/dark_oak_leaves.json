@@ -1,14 +1,14 @@
 {
-  "stringId": "floating_islands:dark_oak_leaves",
+  "stringId": "dark_oak_leaves",
   "blockStates":
   {
       "default": 
       {
-          "modelName": "floating_islands:dark_oak_leaves",
+          "modelName": "dark_oak_leaves",
           "isOpaque": true,
           "isTransparent": true,
           "lightAttenuation": 0,
-          "generateSlabs": true,
+          "stateGenerators": ["base:slabs_all", "base:stairs_seamless_all"],
           "walkThrough": true
       }
   }

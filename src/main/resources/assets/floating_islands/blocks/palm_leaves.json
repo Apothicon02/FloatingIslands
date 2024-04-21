@@ -1,14 +1,14 @@
 {
-  "stringId": "floating_islands:palm_leaves",
+  "stringId": "palm_leaves",
   "blockStates":
   {
       "default": 
       {
-          "modelName": "floating_islands:palm_leaves",
+          "modelName": "palm_leaves",
           "isOpaque": true,
           "isTransparent": true,
           "lightAttenuation": 0,
-          "generateSlabs": true,
+          "stateGenerators": ["base:slabs_all", "base:stairs_seamless_all"],
           "walkThrough": true
       }
   }

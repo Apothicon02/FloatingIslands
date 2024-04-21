@@ -5,15 +5,15 @@
   {
     "top":
     {
-      "fileName": "floating_islands:stripped_tree_log_top.png"
+      "fileName": "stripped_tree_log_top.png"
     },
     "bottom":
     {
-      "fileName": "floating_islands:stripped_tree_log_top.png"
+      "fileName": "stripped_tree_log_top.png"
     },
     "side":
     {
-      "fileName": "floating_islands:stripped_tree_log_side.png"
+      "fileName": "stripped_tree_log_side.png"
     }
   }
 

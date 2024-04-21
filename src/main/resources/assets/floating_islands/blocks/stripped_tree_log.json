@@ -1,16 +1,16 @@
 {
-  "stringId": "floating_islands:stripped_tree_log",
+  "stringId": "stripped_tree_log",
   "blockStates":
   {
     "default":
     {
-      "modelName": "floating_islands:stripped_tree_log",
-      "generateSlabs": true
+      "modelName": "stripped_tree_log",
+      "stateGenerators": ["base:slabs_all", "base:stairs_seamless_all"]
     },
     "type=bark":
     {
-      "modelName": "floating_islands:stripped_tree_log_bark",
-      "generateSlabs": true
+      "modelName": "stripped_tree_log_bark",
+      "stateGenerators": ["base:slabs_all", "base:stairs_seamless_all"]
     }
   }
 }

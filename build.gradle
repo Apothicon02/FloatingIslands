@@ -68,11 +68,7 @@ dependencies {
     // Cosmic Quilt
     internal "org.codeberg.CRModders:cosmic-quilt:${cosmic_quilt_version}"
 
-    internal "dev.crmodders:fluxapi:0.5.8r3"
-
-    // FluxAPI
-    //  If you don't want FluxAPI included in your project, remove this and the reference in the `gradle.properties`
-//    internal "com.github.CRModders:FluxAPI:${fluxapi_version}"
+    //internal "dev.crmodders:fluxapi:0.5.9"
 }
 
 processResources {

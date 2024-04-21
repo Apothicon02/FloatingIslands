@@ -1,32 +1,40 @@
 package com.apothicon.floating_islands;
 
+import com.badlogic.gdx.Gdx;
 import dev.crmodders.cosmicquilt.api.entrypoint.ModInitializer;
-import dev.crmodders.flux.api.generators.BlockGenerator;
-import dev.crmodders.flux.registry.FluxRegistries;
-import dev.crmodders.flux.tags.Identifier;
+import finalforeach.cosmicreach.io.SaveLocation;
 import org.quiltmc.loader.api.ModContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class FloatingIslands implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger("Floating Islands");
-	public static final String modId = "floating_islands";
+	public static boolean isFloatingIslandsRegistered = false;
 	public static final String[] blocks = {
 			"cherry_leaves",
 			"dark_oak_leaves",
 			"palm_leaves",
-			"cactus",
+			"cactus"
+	};
+
+	public static final String[] logBlocks = {
 			"stripped_tree_log"
 	};
-	public static boolean isFloatingIslandsRegistered = false;
 
 	@Override
 	public void onInitialize(ModContainer mod) {
 		LOGGER.info("Floating Islands Initialized!");
 		for (String block:blocks) {
-			FluxRegistries.BLOCKS.register(
-					new Identifier(modId, block), BlockGenerator::createGenerator
-			);
+			Gdx.files.classpath("assets/floating_islands/blocks/"+block+".json").copyTo(Gdx.files.absolute(SaveLocation.getSaveFolderLocation() + "/mods/assets/blocks/"+block+".json"));
+			Gdx.files.classpath("assets/floating_islands/models/blocks/"+block+".json").copyTo(Gdx.files.absolute(SaveLocation.getSaveFolderLocation() + "/mods/assets/models/blocks/"+block+".json"));
+			Gdx.files.classpath("assets/floating_islands/textures/blocks/"+block+".png").copyTo(Gdx.files.absolute(SaveLocation.getSaveFolderLocation() + "/mods/assets/textures/blocks/"+block+".png"));
+		}
+		for (String block:logBlocks) {
+			Gdx.files.classpath("assets/floating_islands/blocks/"+block+".json").copyTo(Gdx.files.absolute(SaveLocation.getSaveFolderLocation() + "/mods/assets/blocks/"+block+".json"));
+			Gdx.files.classpath("assets/floating_islands/models/blocks/"+block+".json").copyTo(Gdx.files.absolute(SaveLocation.getSaveFolderLocation() + "/mods/assets/models/blocks/"+block+".json"));
+			Gdx.files.classpath("assets/floating_islands/models/blocks/"+block+"_bark.json").copyTo(Gdx.files.absolute(SaveLocation.getSaveFolderLocation() + "/mods/assets/models/blocks/"+block+"_bark.json"));
+			Gdx.files.classpath("assets/floating_islands/textures/blocks/"+block+"_top.png").copyTo(Gdx.files.absolute(SaveLocation.getSaveFolderLocation() + "/mods/assets/textures/blocks/"+block+"_top.png"));
+			Gdx.files.classpath("assets/floating_islands/textures/blocks/"+block+"_side.png").copyTo(Gdx.files.absolute(SaveLocation.getSaveFolderLocation() + "/mods/assets/textures/blocks/"+block+"_side.png"));
 		}
 	}
 }
