@@ -472,8 +472,13 @@ public class FloatingIslandsZoneGenerator extends ZoneGenerator {
     }
 
     private boolean isTerrain(int globalX, int globalY, int globalZ) {
-        return Math.min(0.5 - (simplexNoise.noise3_XZBeforeY(globalX * 0.02F, globalY * 0.005F, globalZ * 0.02F) + FloatingIslandsMath.gradient(globalY, 64, 192, -1, 1.5F)),
-                simplexNoise.noise3_XZBeforeY(globalX * 0.0024F, globalY * 0.0016F, globalZ * 0.0024F) + (FloatingIslandsMath.gradient(globalY, 128, 256, 0.75F, 0.5F) - (2 * (0.1 + FloatingIslandsMath.gradient(globalY, 69, 159, 0.76F, 0F))))) > 0;
+        if (globalY > 162) {
+            return Math.min(0.5 - (simplexNoise.noise3_XZBeforeY(globalX * 0.02F, globalY * 0.005F, globalZ * 0.02F)*-1 + FloatingIslandsMath.gradient(globalY, 164, 292, -1, 1.5F)),
+                    simplexNoise.noise3_XZBeforeY(globalX * 0.0024F, globalY * 0.0016F, globalZ * 0.0024F)*-1 + (FloatingIslandsMath.gradient(globalY, 228, 356, 0.75F, 0.5F) - (2 * (0.1 + FloatingIslandsMath.gradient(globalY, 169, 259, 0.76F, 0F))))) > 0;
+        } else {
+            return Math.min(0.5 - (simplexNoise.noise3_XZBeforeY(globalX * 0.02F, globalY * 0.005F, globalZ * 0.02F) + FloatingIslandsMath.gradient(globalY, 64, 192, -1, 1.5F)),
+                    simplexNoise.noise3_XZBeforeY(globalX * 0.0024F, globalY * 0.0016F, globalZ * 0.0024F) + (FloatingIslandsMath.gradient(globalY, 128, 256, 0.75F, 0.5F) - (2 * (0.1 + FloatingIslandsMath.gradient(globalY, 69, 159, 0.76F, 0F))))) > 0;
+        }
     }
 
     private double ocean(int globalX, int globalZ) {
