@@ -3,6 +3,7 @@ package com.apothicon.floating_islands.worldgen;
 import com.apothicon.floating_islands.FloatingIslandsMath;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import finalforeach.cosmicreach.blocks.Block;
 import finalforeach.cosmicreach.blocks.BlockState;
 import finalforeach.cosmicreach.savelib.blockdata.IBlockData;
 import finalforeach.cosmicreach.savelib.blockdata.SingleBlockData;
@@ -25,6 +26,7 @@ public class FloatingIslandsZoneGenerator extends ZoneGenerator {
     BlockState waterBlock = this.getBlockStateInstance("base:water[default]");
     BlockState stoneBasaltBlock = this.getBlockStateInstance("base:stone_basalt[default]");
     BlockState grassBlock = this.getBlockStateInstance("base:grass[default]");
+    BlockState fullGrassBlock = this.getBlockStateInstance("base:grass[type=full]");
     BlockState grassSlabBlock = this.getBlockStateInstance("base:grass[type=full,slab_type=bottom]");
     BlockState sandBlock = this.getBlockStateInstance("base:sand[default]");
     BlockState sandSlabBlock = this.getBlockStateInstance("base:sand[default,slab_type=bottom]");
@@ -93,124 +95,165 @@ public class FloatingIslandsZoneGenerator extends ZoneGenerator {
 
         for (int localY = 0; localY < CHUNK_WIDTH; ++localY) {
             int globalY = chunk.blockY + localY;
-            if (globalY > 0) {
+            if (globalY > 0 && globalY < 256) {
                 for (int localX = 0; localX < CHUNK_WIDTH; ++localX) {
                     int globalX = chunk.blockX + localX;
                     for (int localZ = 0; localZ < CHUNK_WIDTH; ++localZ) {
                         int globalZ = chunk.blockZ + localZ;
-                        Vector2 horizontalPos = new Vector2(globalX, globalZ);
-                        double ocean = ocean(globalX, globalZ);
-                        double featureNoise = featureNoise(globalX, globalZ);
-                        double crackNoise = crackNoise(globalX, globalZ);
-                        if (isTerrain(globalX, globalY, globalZ)) {
-                            BlockState subSurface = this.dirtBlock;
-                            if (temperature(globalX, globalZ) > 0.66) {
-                                if (featureNoise < -0.9) {
-                                    subSurface = this.magmaBlock;
-                                } else {
+                        if (globalY > 32) {
+                            Vector2 horizontalPos = new Vector2(globalX, globalZ);
+                            double ocean = ocean(globalX, globalZ);
+                            double featureNoise = featureNoise(globalX, globalZ);
+                            double crackNoise = crackNoise(globalX, globalZ);
+                            if (isTerrain(globalX, globalY, globalZ)) {
+                                BlockState subSurface = this.dirtBlock;
+                                if (temperature(globalX, globalZ) > 0.66) {
+                                    if (featureNoise < -0.9) {
+                                        subSurface = this.magmaBlock;
+                                    } else {
+                                        subSurface = this.sandBlock;
+                                    }
+                                } else if (ocean > 0.7 && temperature(globalX, globalZ) > -0.5) {
                                     subSurface = this.sandBlock;
                                 }
-                            } else if (ocean > 0.7 && temperature(globalX, globalZ) > -0.5) {
-                                subSurface = this.sandBlock;
-                            }
-                            replaceIfAboveAirOrSelf(zone, this.stoneBasaltBlock, globalX, globalY - 1, globalZ);
-                            replaceIfAboveAirOrSelf(zone, this.stoneBasaltBlock, globalX, globalY, globalZ + 1);
-                            replaceIfAboveAirOrSelf(zone, this.stoneBasaltBlock, globalX, globalY, globalZ - 1);
-                            replaceIfAboveAirOrSelf(zone, this.stoneBasaltBlock, globalX + 1, globalY, globalZ);
-                            replaceIfAboveAirOrSelf(zone, this.stoneBasaltBlock, globalX - 1, globalY, globalZ);
-                            if (!isTerrain(globalX, globalY + 1, globalZ)) {
-                                heightmap.put(horizontalPos, globalY);
-                            }
-                             if (heightmap.get(horizontalPos) != null && heightmap.get(horizontalPos) == globalY) {
-                                 if (ocean > 0.75) {
-                                     replaceIfNotWater(zone, this.airBlock, globalX, globalY + 2, globalZ);
-                                     replaceIfNotWater(zone, this.airBlock, globalX, globalY + 1, globalZ);
-                                     zone.setBlockState(this.waterBlock, globalX, globalY, globalZ);
-                                     int minDepth = (int) (globalY - Math.max(0, (ocean-0.75)*100)+1);
-                                     for (int depth = globalY; depth >= minDepth; depth--) {
-                                         if (zone.getBlockState(globalX, depth, globalZ) == sandBlock) {
-                                             zone.setBlockState(this.waterBlock, globalX, depth, globalZ);
-                                         }
-                                     }
-                                 } else {
-                                    zone.setBlockState(airBlock, globalX, globalY + 1, globalZ);
-                                    if (ocean > 0.7 && temperature(globalX, globalZ) > -0.5) {
-                                        zone.setBlockState(this.sandBlock, globalX, globalY, globalZ);
-                                        if (random.nextInt(0, 420) <= Math.abs(featureNoise * 2) + 1) {
-                                            makePalmTrunk(zone, globalX, globalY + 1, globalZ);
+                                replaceIfAboveAirOrSelf(zone, this.stoneBasaltBlock, globalX, globalY - 1, globalZ);
+                                replaceIfAboveAirOrSelf(zone, this.stoneBasaltBlock, globalX, globalY, globalZ + 1);
+                                replaceIfAboveAirOrSelf(zone, this.stoneBasaltBlock, globalX, globalY, globalZ - 1);
+                                replaceIfAboveAirOrSelf(zone, this.stoneBasaltBlock, globalX + 1, globalY, globalZ);
+                                replaceIfAboveAirOrSelf(zone, this.stoneBasaltBlock, globalX - 1, globalY, globalZ);
+                                if (!isTerrain(globalX, globalY + 1, globalZ)) {
+                                    heightmap.put(horizontalPos, globalY);
+                                }
+                                if (heightmap.get(horizontalPos) != null && heightmap.get(horizontalPos) == globalY) {
+                                    if (ocean > 0.75) {
+                                        replaceIfNotWater(zone, this.airBlock, globalX, globalY + 2, globalZ);
+                                        replaceIfNotWater(zone, this.airBlock, globalX, globalY + 1, globalZ);
+                                        zone.setBlockState(this.waterBlock, globalX, globalY, globalZ);
+                                        int minDepth = (int) (globalY - Math.max(0, (ocean - 0.75) * 100) + 1);
+                                        for (int depth = globalY; depth >= minDepth; depth--) {
+                                            if (zone.getBlockState(globalX, depth, globalZ) == sandBlock) {
+                                                zone.setBlockState(this.waterBlock, globalX, depth, globalZ);
+                                            }
                                         }
                                     } else {
-                                        BlockState surface = this.grassBlock;
-                                        if (crackNoise > -0.15 && crackNoise < 0.15) {
-                                            if (featureNoise < 0.3) {
-                                                surface = this.grassSlabBlock;
-                                            } else {
-                                                surface = this.dirtSlabBlock;
+                                        zone.setBlockState(airBlock, globalX, globalY + 1, globalZ);
+                                        if (ocean > 0.7 && temperature(globalX, globalZ) > -0.5) {
+                                            zone.setBlockState(this.sandBlock, globalX, globalY, globalZ);
+                                            if (random.nextInt(0, 420) <= Math.abs(featureNoise * 2) + 1) {
+                                                makePalmTrunk(zone, globalX, globalY + 1, globalZ);
                                             }
-                                        }
-                                        if (temperature(globalX, globalZ) > 0.66) {
-                                            if (featureNoise < -0.9) {
-                                                surface = this.magmaSlabBlock;
-                                            } else if (crackNoise > -0.15 && crackNoise < 0.15) {
-                                                surface = this.sandSlabBlock;
-                                            } else {
-                                                surface = this.sandBlock;
-                                            }
-                                        } else if (temperature(globalX, globalZ) < -0.66) {
-                                            surface = this.snowBlock;
-                                        }
-                                        zone.setBlockState(surface, globalX, globalY, globalZ);
-                                        if (surface == this.sandBlock && random.nextInt(0, 40) <= Math.abs(featureNoise) + 0.5) {
-                                            BlockState cactusType = this.cactusBlockZ;
-                                            if (random.nextFloat() < 0.25) {
-                                                cactusType = this.cactusBlockNegZ;
-                                            } else if (random.nextFloat() < 0.5) {
-                                                cactusType = this.cactusBlockX;
-                                            } else if (random.nextFloat() < 0.75) {
-                                                cactusType = this.cactusBlockNegX;
-                                            }
-                                            zone.setBlockState(cactusType, globalX, globalY + 1, globalZ);
-                                            zone.setBlockState(cactusType, globalX, globalY + 2, globalZ);
-                                            if (featureNoise > 0.5) {
-                                                zone.setBlockState(cactusType, globalX, globalY + 3, globalZ);
-                                                if (featureNoise > 0.8) {
-                                                    zone.setBlockState(cactusType, globalX, globalY + 4, globalZ);
-                                                    zone.setBlockState(cactusType, globalX, globalY + 5, globalZ);
+                                        } else {
+                                            BlockState surface = this.grassBlock;
+                                            if (crackNoise > -0.15 && crackNoise < 0.15) {
+                                                if (featureNoise < 0.3) {
+                                                    surface = this.grassSlabBlock;
+                                                } else {
+                                                    surface = this.dirtSlabBlock;
                                                 }
                                             }
-                                        } else if (surface == this.grassBlock) {
-                                            if (featureNoise < 0.3) {
-                                                if (random.nextInt(0, 420) <= Math.abs(featureNoise * 2) + 1) {
-                                                    int height = random.nextInt(6, 24);
-                                                    if (makeTrunk(height, zone, globalX, globalY, globalZ)) {
-                                                        makeCanopy(cherryLeavesBlock, random.nextInt(5, 7), zone, globalX, globalY + height, globalZ);
+                                            if (temperature(globalX, globalZ) > 0.66) {
+                                                if (featureNoise < -0.9) {
+                                                    surface = this.magmaSlabBlock;
+                                                } else if (crackNoise > -0.15 && crackNoise < 0.15) {
+                                                    surface = this.sandSlabBlock;
+                                                } else {
+                                                    surface = this.sandBlock;
+                                                }
+                                            } else if (temperature(globalX, globalZ) < -0.66) {
+                                                surface = this.snowBlock;
+                                            }
+                                            zone.setBlockState(surface, globalX, globalY, globalZ);
+                                            if (surface == this.sandBlock && random.nextInt(0, 40) <= Math.abs(featureNoise) + 0.5) {
+                                                BlockState cactusType = this.cactusBlockZ;
+                                                if (random.nextFloat() < 0.25) {
+                                                    cactusType = this.cactusBlockNegZ;
+                                                } else if (random.nextFloat() < 0.5) {
+                                                    cactusType = this.cactusBlockX;
+                                                } else if (random.nextFloat() < 0.75) {
+                                                    cactusType = this.cactusBlockNegX;
+                                                }
+                                                zone.setBlockState(cactusType, globalX, globalY + 1, globalZ);
+                                                zone.setBlockState(cactusType, globalX, globalY + 2, globalZ);
+                                                if (featureNoise > 0.5) {
+                                                    zone.setBlockState(cactusType, globalX, globalY + 3, globalZ);
+                                                    if (featureNoise > 0.8) {
+                                                        zone.setBlockState(cactusType, globalX, globalY + 4, globalZ);
+                                                        zone.setBlockState(cactusType, globalX, globalY + 5, globalZ);
                                                     }
-                                                } else if (random.nextInt(0, 384) <= Math.abs(featureNoise * 2) + 1) {
+                                                }
+                                            } else if (surface == this.grassBlock) {
+                                                if (featureNoise < 0.3) {
+                                                    if (random.nextInt(0, 420) <= Math.abs(featureNoise * 2) + 1) {
+                                                        int height = random.nextInt(6, 24);
+                                                        if (makeTrunk(height, zone, globalX, globalY, globalZ)) {
+                                                            makeCanopy(cherryLeavesBlock, random.nextInt(5, 7), zone, globalX, globalY + height, globalZ);
+                                                        }
+                                                    } else if (random.nextInt(0, 384) <= Math.abs(featureNoise * 2) + 1) {
+                                                        int height = 1;
+                                                        if (makeTrunk(height, zone, globalX, globalY, globalZ)) {
+                                                            makeSphere(darkOakLeavesBlock, 2, zone, globalX, globalY + 1, globalZ);
+                                                        }
+                                                    } else {
+                                                        zone.setBlockState(cherryLeavesSlabBlock, globalX, globalY + 1, globalZ);
+                                                    }
+                                                } else if (random.nextInt(0, 172) <= Math.abs(featureNoise * 2) + 1) {
+                                                    int height = random.nextInt(6, 16);
+                                                    if (makeTrunk(height, zone, globalX, globalY, globalZ)) {
+                                                        makeCanopy(darkOakLeavesBlock, random.nextInt(3, 6), zone, globalX, globalY + height, globalZ);
+                                                    }
+                                                } else if (random.nextInt(0, 48) <= Math.abs(featureNoise * 2) + 1) {
                                                     int height = 1;
                                                     if (makeTrunk(height, zone, globalX, globalY, globalZ)) {
                                                         makeSphere(darkOakLeavesBlock, 2, zone, globalX, globalY + 1, globalZ);
                                                     }
-                                                } else {
-                                                    zone.setBlockState(cherryLeavesSlabBlock, globalX, globalY + 1, globalZ);
-                                                }
-                                            } else if (random.nextInt(0, 172) <= Math.abs(featureNoise * 2) + 1) {
-                                                int height = random.nextInt(6, 16);
-                                                if (makeTrunk(height, zone, globalX, globalY, globalZ)) {
-                                                    makeCanopy(darkOakLeavesBlock, random.nextInt(3, 6), zone, globalX, globalY + height, globalZ);
-                                                }
-                                            } else if (random.nextInt(0, 48) <= Math.abs(featureNoise * 2) + 1) {
-                                                int height = 1;
-                                                if (makeTrunk(height, zone, globalX, globalY, globalZ)) {
-                                                    makeSphere(darkOakLeavesBlock, 2, zone, globalX, globalY + 1, globalZ);
                                                 }
                                             }
                                         }
                                     }
+                                } else {
+                                    zone.setBlockState(subSurface, globalX, globalY, globalZ);
                                 }
+                            }
+                        } else {
+                            double floor = (Math.abs(simplexNoise.noise2(globalX*0.007F, globalZ*0.007F)) + (FloatingIslandsMath.gradient(globalY, 0, 14, 0.35F, 0.25F) - (2 * (0.1 + FloatingIslandsMath.gradient(globalY, 12, 18, 0.76F, 0F))))) * FloatingIslandsMath.gradient(globalY, 0, 18, 1F, 0F);
+                            if (floor > 0) {
+                                zone.setBlockState(sandBlock, globalX, globalY, globalZ);
                             } else {
-                                zone.setBlockState(subSurface, globalX, globalY, globalZ);
+                                double noise = Math.abs(simplexNoise.noise2(globalX * 0.0007F, globalZ * 0.0007F));
+                                int y = (int) (64 - (noise * 42));
+                                for (int newY = y; newY >= 0; newY--) {
+                                    Vector3 blockPos = new Vector3(globalX, newY, globalZ);
+                                    BlockState blockReplacing = zone.getBlockState(blockPos);
+                                    if (blockReplacing == null || blockReplacing == airBlock) {
+                                        zone.setBlockState(waterBlock, globalX, y, globalZ);
+                                    }
+                                }
+                                y = (int) (8 - (noise * -420));
+                                double areaNoise = simplexNoise.noise2(globalX * 0.003F, globalZ * 0.003F);
+                                if (areaNoise > -0.01 && areaNoise < 0.01) {
+                                    //lower
+                                    placeCube(zone, globalX, y, globalZ, fullGrassBlock);
+                                }
+                                double secondaryAreaNoise = simplexNoise.noise2(globalX * 0.0015F, globalZ * 0.0015F);
+                                if (secondaryAreaNoise > -0.01 && secondaryAreaNoise < 0.01) {
+                                    //secondary
+                                    placeCube(zone, globalX, y, globalZ, fullGrassBlock);
+                                }
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    private void placeCube(Zone zone, int ogX, int ogY, int ogZ, BlockState blockState) {
+        for (int x = ogX-2; x <= ogX+2; x++) {
+            for (int y = ogY-2; y <= ogY+2; y++) {
+                for (int z = ogZ - 2; z <= ogZ + 2; z++) {
+                    BlockState beingReplaced = zone.getBlockState(x, y, z);
+                    if (beingReplaced == null || beingReplaced == airBlock) {
+                        zone.setBlockState(blockState, x, y, z);
                     }
                 }
             }
@@ -475,10 +518,11 @@ public class FloatingIslandsZoneGenerator extends ZoneGenerator {
         if (globalY > 162) {
             return Math.min(0.5 - (simplexNoise.noise3_XZBeforeY(globalX * 0.02F, globalY * 0.005F, globalZ * 0.02F)*-1 + FloatingIslandsMath.gradient(globalY, 164, 292, -1, 1.5F)),
                     simplexNoise.noise3_XZBeforeY(globalX * 0.0024F, globalY * 0.0016F, globalZ * 0.0024F)*-1 + (FloatingIslandsMath.gradient(globalY, 228, 356, 0.75F, 0.5F) - (2 * (0.1 + FloatingIslandsMath.gradient(globalY, 169, 259, 0.76F, 0F))))) > 0;
-        } else {
+        } else if (globalY > 32) {
             return Math.min(0.5 - (simplexNoise.noise3_XZBeforeY(globalX * 0.02F, globalY * 0.005F, globalZ * 0.02F) + FloatingIslandsMath.gradient(globalY, 64, 192, -1, 1.5F)),
                     simplexNoise.noise3_XZBeforeY(globalX * 0.0024F, globalY * 0.0016F, globalZ * 0.0024F) + (FloatingIslandsMath.gradient(globalY, 128, 256, 0.75F, 0.5F) - (2 * (0.1 + FloatingIslandsMath.gradient(globalY, 69, 159, 0.76F, 0F))))) > 0;
         }
+        return false;
     }
 
     private double ocean(int globalX, int globalZ) {
