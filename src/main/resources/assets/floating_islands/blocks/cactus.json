@@ -1,13 +1,16 @@
 {
-  "stringId": "cactus",
+  "stringId": "floatingislands:cactus",
   "blockStates":
   {
-      "default": 
-      {
-          "modelName": "cactus",
-          "isOpaque": true,
-          "isTransparent": false,
-          "stateGenerators": ["base:slabs_all", "base:stairs_seamless_all"]
-      }
+    "default":
+    {
+      "modelName": "cactus",
+      "isOpaque": true,
+      "isTransparent": false,
+      "stateGenerators": ["base:slabs_all", "base:stairs_seamless_all"],
+      "tags": [
+        "tool_axe_effective"
+      ]
+    }
   }
 }

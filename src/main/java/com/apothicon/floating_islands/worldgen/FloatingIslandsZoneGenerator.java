@@ -33,23 +33,23 @@ public class FloatingIslandsZoneGenerator extends ZoneGenerator {
     BlockState dirtBlock = this.getBlockStateInstance("base:dirt[default]");
     BlockState dirtSlabBlock = this.getBlockStateInstance("base:dirt[default,slab_type=bottom]");
     BlockState snowBlock = this.getBlockStateInstance("base:snow[default]");
-    BlockState cactusBlockZ = this.getBlockStateInstance("cactus[default,slab_type=verticalPosZ]");
-    BlockState cactusBlockNegZ = this.getBlockStateInstance("cactus[default,slab_type=verticalNegZ]");
-    BlockState cactusBlockX = this.getBlockStateInstance("cactus[default,slab_type=verticalPosX]");
-    BlockState cactusBlockNegX = this.getBlockStateInstance("cactus[default,slab_type=verticalNegZ]");
+    BlockState cactusBlockZ = this.getBlockStateInstance("floatingislands:cactus[default,slab_type=verticalPosZ]");
+    BlockState cactusBlockNegZ = this.getBlockStateInstance("floatingislands:cactus[default,slab_type=verticalNegZ]");
+    BlockState cactusBlockX = this.getBlockStateInstance("floatingislands:cactus[default,slab_type=verticalPosX]");
+    BlockState cactusBlockNegX = this.getBlockStateInstance("floatingislands:cactus[default,slab_type=verticalNegZ]");
     BlockState logBlock = this.getBlockStateInstance("base:tree_log[default]");
     BlockState woodBlock = this.getBlockStateInstance("base:tree_log[type=bark]");
-    BlockState strippedWoodBlock = this.getBlockStateInstance("stripped_tree_log[type=bark]");
+    BlockState strippedWoodBlock = this.getBlockStateInstance("floatingislands:stripped_tree_log[type=bark]");
     BlockState branchBlockZ = this.getBlockStateInstance("base:tree_log[default,slab_type=verticalPosZ]");
     BlockState branchBlockNegZ = this.getBlockStateInstance("base:tree_log[default,slab_type=verticalNegZ]");
     BlockState branchBlockX = this.getBlockStateInstance("base:tree_log[default,slab_type=verticalPosX]");
     BlockState branchBlockNegX = this.getBlockStateInstance("base:tree_log[default,slab_type=verticalNegX]");
     BlockState magmaBlock = this.getBlockStateInstance("base:magma[default]");
     BlockState magmaSlabBlock = this.getBlockStateInstance("base:magma[default,slab_type=bottom]");
-    BlockState cherryLeavesBlock = this.getBlockStateInstance("cherry_leaves[default]");
-    BlockState cherryLeavesSlabBlock = this.getBlockStateInstance("cherry_leaves[default,slab_type=bottom]");
-    BlockState darkOakLeavesBlock = this.getBlockStateInstance("dark_oak_leaves[default]");
-    BlockState palmLeavesBlock = this.getBlockStateInstance("palm_leaves[default]");
+    BlockState cherryLeavesBlock = this.getBlockStateInstance("floatingislands:cherry_leaves[type=permament]");
+    BlockState cherryLeavesSlabBlock = this.getBlockStateInstance("floatingislands:cherry_leaves[type=permament,slab_type=bottom]");
+    BlockState darkOakLeavesBlock = this.getBlockStateInstance("floatingislands:dark_oak_leaves[type=permament]");
+    BlockState palmLeavesBlock = this.getBlockStateInstance("floatingislands:palm_leaves[type=permament]");
     Random random = new Random(seed);
     private SimplexNoise simplexNoise;
     IBlockDataFactory<BlockState> chunkDataFactory = new IBlockDataFactory<BlockState>() {
@@ -71,6 +71,11 @@ public class FloatingIslandsZoneGenerator extends ZoneGenerator {
 
     protected String getName() {
         return "Floating Islands";
+    }
+
+    @Override
+    public int getDefaultRespawnYLevel() {
+        return 0;
     }
 
     public void generateForChunkColumn(Zone zone, ChunkColumn col) {
@@ -225,7 +230,7 @@ public class FloatingIslandsZoneGenerator extends ZoneGenerator {
                                     Vector3 blockPos = new Vector3(globalX, newY, globalZ);
                                     BlockState blockReplacing = zone.getBlockState(blockPos);
                                     if (blockReplacing == null || blockReplacing == airBlock) {
-                                        zone.setBlockState(waterBlock, globalX, y, globalZ);
+                                        zone.setBlockState(waterBlock, globalX, newY, globalZ);
                                     }
                                 }
                                 y = (int) (8 - (noise * -420));

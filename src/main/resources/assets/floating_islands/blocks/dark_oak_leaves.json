@@ -1,15 +1,83 @@
 {
-  "stringId": "dark_oak_leaves",
+  "stringId": "floatingislands:dark_oak_leaves",
   "blockStates":
   {
-      "default": 
+    "type=permament":
+    {
+      "modelName": "dark_oak_leaves",
+      "isOpaque": true,
+      "isTransparent": true,
+      "lightAttenuation": 2,
+      "cullsSelf": false,
+      "stateGenerators": ["base:slabs_all", "base:stairs_seamless_all"],
+      "walkThrough": true,
+      "tags": [
+        "tool_axe_effective"
+      ],
+      "intProperties":
       {
-          "modelName": "dark_oak_leaves",
-          "isOpaque": true,
-          "isTransparent": true,
-          "lightAttenuation": 0,
-          "stateGenerators": ["base:slabs_all", "base:stairs_seamless_all"],
-          "walkThrough": true
+        "fuelTicks": 4
       }
+    },
+    "dist=2,type=decaying":
+    {
+      "modelName": "dark_oak_leaves",
+      "isOpaque": true,
+      "isTransparent": true,
+      "lightAttenuation": 2,
+      "cullsSelf": false,
+      "blockEventsId": "base:block_events_leaf_decay",
+      "stateGenerators": ["base:slabs_all", "base:stairs_seamless_all"],
+      "walkThrough": true,
+      "dropId": "floatingislands:dark_oak_leaves[type=permament]",
+      "catalogHidden": true,
+      "tags": [
+        "tool_axe_effective"
+      ],
+      "intProperties":
+      {
+        "fuelTicks": 4
+      }
+    },
+    "dist=3,type=decaying":
+    {
+      "modelName": "dark_oak_leaves",
+      "isOpaque": true,
+      "isTransparent": true,
+      "lightAttenuation": 2,
+      "cullsSelf": false,
+      "blockEventsId": "base:block_events_leaf_decay",
+      "stateGenerators": ["base:slabs_all", "base:stairs_seamless_all"],
+      "walkThrough": true,
+      "dropId": "floatingislands:dark_oak_leaves[type=permament]",
+      "catalogHidden": true,
+      "tags": [
+        "tool_axe_effective"
+      ],
+      "intProperties":
+      {
+        "fuelTicks": 4
+      }
+    },
+    "dist=4,type=decaying":
+    {
+      "modelName": "dark_oak_leaves",
+      "isOpaque": true,
+      "isTransparent": true,
+      "lightAttenuation": 2,
+      "cullsSelf": false,
+      "blockEventsId": "base:block_events_leaf_decay",
+      "stateGenerators": ["base:slabs_all", "base:stairs_seamless_all"],
+      "walkThrough": true,
+      "dropId": "floatingislands:dark_oak_leaves[type=permament]",
+      "catalogHidden": true,
+      "tags": [
+        "tool_axe_effective"
+      ],
+      "intProperties":
+      {
+        "fuelTicks": 4
+      }
+    }
   }
 }

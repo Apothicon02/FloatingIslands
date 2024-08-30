@@ -1,16 +1,30 @@
 {
-  "stringId": "stripped_tree_log",
+  "stringId": "floatingislands:stripped_tree_log",
   "blockStates":
   {
     "default":
     {
       "modelName": "stripped_tree_log",
-      "stateGenerators": ["base:slabs_all", "base:stairs_seamless_all"]
+      "stateGenerators": ["base:slabs_all", "base:stairs_seamless_all"],
+      "tags": [
+        "tool_axe_effective"
+      ],
+      "intProperties":
+      {
+        "fuelTicks": 64
+      }
     },
     "type=bark":
     {
       "modelName": "stripped_tree_log_bark",
-      "stateGenerators": ["base:slabs_all", "base:stairs_seamless_all"]
+      "stateGenerators": ["base:slabs_all", "base:stairs_seamless_all"],
+      "tags": [
+        "tool_axe_effective"
+      ],
+      "intProperties":
+      {
+        "fuelTicks": 64
+      }
     }
   }
 }

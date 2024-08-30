@@ -6,9 +6,9 @@ plugins {
 repositories {
     ivy {
         name "Cosmic Reach"
-        url "https://github.com/CRModders/CosmicArchive/raw/main/"
+        url "https://github.com/CRModders/CosmicArchive/raw/main/versions"
         patternLayout {
-            artifact "/Cosmic Reach-[revision].jar"
+            artifact "[classifier]/Cosmic Reach-[revision].jar"
         }
         // This is required in Gradle 6.0+ as metadata file (ivy.xml) is mandatory
         metadataSources {
@@ -16,9 +16,10 @@ repositories {
         }
 
         content {
-            includeGroup "finalforeach"
+            includeModule "finalforeach", "cosmicreach"
         }
     }
+
 
     maven {
         name "JitPack"
@@ -36,10 +37,15 @@ repositories {
         name "Sponge"
         url "https://repo.spongepowered.org/maven/"
     }
+
+
+    /* // CRM repos, you may or may not want it. (you wont need it as CRMM stuff is also on jitpack)
     maven {
-        name "CRM"
-        url 'https://maven.crmodders.dev/releases/'
+        name "crmReleases"
+        url "https://maven.crmodders.dev/releases"
     }
+     */
+
 
     mavenCentral()
 }
@@ -63,17 +69,17 @@ configurations {
 
 dependencies {
     // Cosmic Reach jar
-    cosmicreach "finalforeach:cosmicreach:${cosmic_reach_version}"
+    cosmicreach "finalforeach:cosmicreach:${cosmic_reach_version}:pre-alpha"
 
     // Cosmic Quilt
     internal "org.codeberg.CRModders:cosmic-quilt:${cosmic_quilt_version}"
-
-    //internal "dev.crmodders:fluxapi:0.5.9"
+    // Modmenu
+//    internal "org.codeberg.CRModders:modmenu:${modmenu_version}"
 }
 
 processResources {
     def resourceTargets = [ // Locations of where to inject the properties
-            "quilt.mod.json"
+                            "quilt.mod.json"
     ]
 
     // Left item is the name in the target, right is the varuable name
@@ -118,8 +124,8 @@ run {
 
 
 java {
-	withSourcesJar()
-	// withJavadocJar() // If docs are included with the project, this line can be un-commented
+    withSourcesJar()
+    // withJavadocJar() // If docs are included with the project, this line can be un-commented
 
     // Sets the Java version
     sourceCompatibility = JavaVersion.VERSION_17
@@ -132,7 +138,7 @@ publishing {
             groupId = group
             artifactId = id
 
-		    from components.java
+            from components.java
         }
     }
 
